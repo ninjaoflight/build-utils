@@ -2,14 +2,15 @@ import fnmatch
 import os
 
 class unit_file:
-    def __init__(self, name, path) -> None:
+    def __init__(self, name, path, ext) -> None:
         self.name = name
         self.path = path
+        self.ext = ext
 
     def __repr__(self) -> str:
-        return f"unit_file({self.name}, {self.path})"
+        return f"unit_file({self.name}, {self.path}, {self.ext})"
     def __str__(self) -> str:
-        return self.name
+        return self.name + self.ext
 
 
 def find_files(directories, extensions):
@@ -18,6 +19,7 @@ def find_files(directories, extensions):
         for file in os.listdir(directory):
             for extension in extensions:
                 if fnmatch.fnmatch(file, f'*.{extension}'):
-                    res.append(unit_file(file, directory))
+                    (name, ext) = os.path.splitext(file)
+                    res.append(unit_file(name, directory, ext))
                     break
     return res
